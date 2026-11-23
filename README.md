@@ -3,27 +3,79 @@
 ## Aim
 To design, implement, and verify the functionality of basic AND, OR, and NOT logic gates using Verilog HDL, and verify the functionality using Synopsys VCS and DVE.
 # Software Required
-•	Synopsys VCS
-•	Synopsys DVE
-•	Linux Terminal
-•	Verilog HDL
+•	Synopsys VCS                                                                                                                                                     
+•	Synopsys DVE                                                                                                                                                     
+•	Linux Terminal                                                                                                                                                   
+•	Verilog HDL                                                                                                                                                                
+
 # Boolean Function
 The basic logic gates realize the following Boolean functions:
 
-•	AND: Y_AND = A . B
-•	OR: Y_OR = A + B
-•	NOT: Y_NOT = A'
+•	AND: Y_AND = A . B                                                                                                                                               
+•	OR: Y_OR = A + B                                                                                                                                                 
+•	NOT: Y_NOT = A'                                                                                                                                                   
 
 # Theory / Synopsis
 Logic gates are the basic building blocks of digital systems. NAND and NOR are universal gates. XOR produces 1 when its inputs differ, while XNOR produces 1 when its inputs are equal.
 # Files to be Created
-File name	Purpose
-logic_gates.v	Logic-gate RTL
-logic_gates_tb.v	All input combinations and VCD generation
+File name	          Purpose
+
+logic_gates.v	      Logic-gate RTL
+
+logic_gates_tb.v	   All input combinations and VCD generation
  # Verilog  Program
+// gedit basic_gates.v
+
+module basic_gates (
+     input  wire a,
+     input  wire b,
+     output wire y_and,
+     output wire y_or,
+     output wire y_not
+);
+
+    assign y_and = a & b;   // AND gate
+    assign y_or  = a | b;   // OR gate
+    assign y_not = ~a;      // NOT gate (inverter)
+
+endmodule
+
 
 # **Test Bench Program**
 
+
+module tb2;
+
+    reg a, b;
+    wire y_and, y_or, y_not;
+
+    // Instantiate the design under test (DUT)
+    basic_gates uut (
+        .a(a),
+        .b(b),
+        .y_and(y_and),
+        .y_or(y_or),
+        .y_not(y_not)
+    );
+
+    initial begin
+        // ---- VCD dump setup ----
+        $dumpfile("basic_gates.vcd");   // name of the VCD file to be generated
+        $dumpvars(0, tb2);               // dump all signals in this testbench hierarchy
+
+        // ---- Apply all 4 input combinations ----
+        $monitor("Time=%0t a=%b b=%b | AND=%b OR=%b NOT(a)=%b", $time, a, b, y_and, y_or, y_not);
+
+        a = 0; b = 0; #10;
+        a = 0; b = 1; #10;
+        a = 1; b = 0; #10;
+        a = 1; b = 1; #10;
+
+        #10 $finish;
+#10;
+    end
+
+endmodule
 
 
 
@@ -79,6 +131,7 @@ The design was compiled and simulated using Synopsys VCS, and the functionality 
 Output
 # OUTPUT
 
+<img width="1600" height="848" alt="EXP 2 De" src="https://github.com/user-attachments/assets/b7656c70-f651-4061-be80-6d9e3a08b21c" />
 
  
 # Viva-Voce Questions
